@@ -4,14 +4,29 @@ const port=3000;
 function requestHandeler(request,response){
     console.log(request.url+"The response is: "+ response);
     response.writeHead(200,{'content-type':'text/html'},{'connection':'zombie'});
-    fs.readFile('./index.htm',function(err,data){
-        if(err){
-            console.log(err);
-            return response.end('<h1>Error!</h1>');
+   
+    let filePath;
+    switch(request.url){
+        case'/':
+        filePath='./index.html'
+        break;
+        case'/profile':
+        filePath='./profile.html'
+        break;
+        default:
+            filePath='./Error404.html'
 
+    }
+    fs.readFile(filePath,function(err, data){
+        if(err){
+            console.log('error', err);
+            return response.end('<h1>Error!</h1>');
         }
+        
+        
         return response.end(data);
-    })    
+        
+    })   
 
 
 }
